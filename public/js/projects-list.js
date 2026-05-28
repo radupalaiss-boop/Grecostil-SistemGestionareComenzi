@@ -26,12 +26,26 @@ function displayProjects(projects) {
         return;
     }
     
-    container.innerHTML = projects.map(project => `
-        <div class="project-card" data-project-id="${project.id}">
+    container.innerHTML = '';
+    
+    projects.forEach(project => {
+        const card = document.createElement('div');
+        card.className = 'project-card';
+        card.style.cursor = 'pointer';
+        card.onclick = function(e) {
+            // Previne ca click-ul pe butoane să declanșeze redirect-ul
+            if (e.target.tagName === 'BUTTON' || e.target.tagName === 'SELECT') {
+                return;
+            }
+            console.log('Redirecting to project:', project.id);
+            window.location = `project.html?id=${project.id}`;
+        };
+        
+        card.innerHTML = `
             <h3>${escapeHtml(project.name)}</h3>
             <p><strong>Client:</strong> ${escapeHtml(project.client)}</p>
             <p><strong>Status:</strong> 
-                <select class="status-select" data-project-id="${project.id}" onchange="updateProjectStatus(${project.id}, this.value)">
+                <select class="status-select" onclick="event.stopPropagation()" onchange="updateProjectStatus(${project.id}, this.value)">
                     <option value="active" ${project.status === 'active' ? 'selected' : ''}>Active</option>
                     <option value="completed" ${project.status === 'completed' ? 'selected' : ''}>Completed</option>
                     <option value="on_hold" ${project.status === 'on_hold' ? 'selected' : ''}>On Hold</option>
@@ -40,22 +54,26 @@ function displayProjects(projects) {
             <p><strong>Orders:</strong> ${project.order_count || 0}</p>
             <p><strong>Offers:</strong> ${project.offer_count || 0}</p>
             <p><strong>Total Value:</strong> ${(project.estimated_value || 0).toLocaleString()} MDL</p>
-            <div class="project-actions">
-                <button onclick="event.stopPropagation(); editProject(${project.id})" class="btn-icon btn-edit">✏️ Edit</button>
-                <button onclick="event.stopPropagation(); deleteProject(${project.id})" class="btn-icon btn-delete">🗑️ Delete</button>
+            <div class="project-actions" onclick="event.stopPropagation()">
+                <button onclick="editProject(${project.id})" class="btn-icon btn-edit">✏️ Edit</button>
+                <button onclick="deleteProject(${project.id})" class="btn-icon btn-delete">🗑️ Delete</button>
             </div>
-        </div>
-    `).join('');
+        `;
+        
+        container.appendChild(card);
+    });
+}
+// Funcția care duce la pagina proiectului
+function goToProject(projectId) {
+    console.log('Going to project:', projectId);
+    window.location.href = `project.html?id=${projectId}`;
 }
 
-// Funcția principală pentru actualizarea statusului proiectului
 async function updateProjectStatus(projectId, newStatus) {
     try {
-        // Găsim proiectul în datele existente
         const project = window.allProjects.find(p => p.id === projectId);
         if (!project) return;
         
-        // Pregătim datele actualizate
         const updatedProject = {
             name: project.name,
             client: project.client,
@@ -63,7 +81,6 @@ async function updateProjectStatus(projectId, newStatus) {
             estimated_value: project.estimated_value
         };
         
-        // Trimitem cererea la server
         const response = await fetch(`/api/projects/${projectId}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
@@ -73,17 +90,10 @@ async function updateProjectStatus(projectId, newStatus) {
         const data = await response.json();
         
         if (data.success) {
-            // Actualizăm statusul în datele locale
-            project.status = newStatus;
-            
-            // Arătăm notificare de succes
-            showNotification(`Status changed to ${getStatusText(newStatus)}`, 'success');
-            
-            // Reîncărcăm proiectele pentru a fi siguri
+            showNotification(`Status changed to ${newStatus}`, 'success');
             await loadAllProjects();
         } else {
             showNotification(data.error || 'Error updating status', 'error');
-            // Reîncărcăm pentru a reveni la statusul corect
             await loadAllProjects();
         }
     } catch (error) {
@@ -91,16 +101,6 @@ async function updateProjectStatus(projectId, newStatus) {
         showNotification('Error updating status', 'error');
         await loadAllProjects();
     }
-}
-
-// Helper pentru a afișa textul statusului în română
-function getStatusText(status) {
-    const statusMap = {
-        'active': 'Active',
-        'completed': 'Completed',
-        'on_hold': 'On Hold'
-    };
-    return statusMap[status] || status;
 }
 
 function filterProjects() {

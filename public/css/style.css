@@ -1404,3 +1404,15 @@ body {
         padding: 10px 20px;
     }
 }
+
+/* Adaugă în public/css/style.css */
+.btn-pdf {
+    background: linear-gradient(135deg, #c9a84c 0%, #b8922e 100%);
+    color: #0c0d0f;
+    border: none;
+}
+
+.btn-pdf:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(201, 168, 76, 0.4);
+}
