@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grecostil - History</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<nav class="navbar">
+    <div class="nav-brand">Grecostil</div>
+    <div class="nav-right">
+        <div class="language-selector-nav">
+            <button onclick="changeLanguage('ro')">RO</button>
+            <button onclick="changeLanguage('en')">EN</button>
+            <button onclick="changeLanguage('ru')">RU</button>
+        </div>
+        <div class="user-info">
+            <span id="username"></span>
+            <button onclick="logout()" class="btn-logout" data-i18n="logout">Logout</button>
+        </div>
+    </div>
+</nav>
+    
+    <div class="sidebar">
+        <a href="dashboard.html" data-i18n="dashboard">Dashboard</a>
+        <a href="project.html" data-i18n="projects">Projects</a>
+        <a href="history.html" class="active" data-i18n="history">History</a>
+    </div>
+    
+    <div class="main-content">
+        <h1 data-i18n="history">Activity History</h1>
+        
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Search logs..." data-i18n="search">
+            <button onclick="resetFilters()" class="btn-secondary">Reset</button>
+        </div>
+        
+        <div id="historyList"></div>
+    </div>
+    
+    <script src="js/i18n.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/history.js"></script>
+</body>
+</html>

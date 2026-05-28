@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grecostil - Dashboard</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<nav class="navbar">
+    <div class="nav-brand">Grecostil</div>
+    <div class="nav-right">
+        <div class="language-selector-nav">
+            <button onclick="changeLanguage('ro')">RO</button>
+            <button onclick="changeLanguage('en')">EN</button>
+            <button onclick="changeLanguage('ru')">RU</button>
+        </div>
+        <div class="user-info">
+            <span id="username"></span>
+            <button onclick="logout()" class="btn-logout" data-i18n="logout">Logout</button>
+        </div>
+    </div>
+</nav>
+    
+    <div class="sidebar">
+        <a href="dashboard.html" class="active" data-i18n="dashboard">Dashboard</a>
+        <a href="project.html" data-i18n="projects">Projects</a>
+        <a href="history.html" data-i18n="history">History</a>
+    </div>
+    
+    <div class="main-content">
+        <h1 data-i18n="welcome">Welcome to Grecostil Management System</h1>
+        
+        <div class="stats-container">
+            <div class="stat-card">
+                <h3 data-i18n="total_projects">Total Projects</h3>
+                <p id="totalProjects">0</p>
+            </div>
+            <div class="stat-card">
+                <h3 data-i18n="active_orders">Active Orders</h3>
+                <p id="activeOrders">0</p>
+            </div>
+            <div class="stat-card">
+                <h3 data-i18n="offers_in_progress">Offers in Progress</h3>
+                <p id="offersInProgress">0</p>
+            </div>
+            <div class="stat-card">
+                <h3 data-i18n="total_value">Total Estimated Value</h3>
+                <p id="totalValue">0 MDL</p>
+            </div>
+        </div>
+        
+        <div class="projects-section">
+            <h2 data-i18n="active_projects">Active Projects</h2>
+            <div id="projectsList" class="projects-grid"></div>
+        </div>
+    </div>
+    
+    <script src="js/i18n.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>
