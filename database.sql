@@ -1,6 +1,6 @@
 -- Crearea bazei de date
-CREATE DATABASE IF NOT EXISTS s186897_db1779805112871;
-USE s186897_db1779805112871;
+CREATE DATABASE IF NOT EXISTS grecostil_db;
+USE grecostil_db;
 
 -- Tabela users
 CREATE TABLE IF NOT EXISTS users (
